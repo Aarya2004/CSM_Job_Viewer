@@ -12,7 +12,8 @@ driver = webdriver.Chrome()
 actions = ActionChains(driver)
 wait = WebDriverWait(driver, 10)
 
-def authenticate_through_Duo():
+
+def authenticate_through_Duo(): #Option 1 - User authenticates through Duo Mobile
     login_button = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "auth-button")))
     actions.click(login_button)
     try:
@@ -20,7 +21,7 @@ def authenticate_through_Duo():
     except StaleElementReferenceException:
         print("Element changed")
 
-def authenticate_through_passcode(passcode: str):
+def authenticate_through_passcode(passcode: str): #Option 2 - User inputs passcode as a string from Duo Mobile and authenticates directly
     login_button = wait.until(EC.element_to_be_clickable((By.ID, "passcode")))
     actions.click(login_button)
     try:
@@ -60,7 +61,7 @@ wait = WebDriverWait(driver, 15)
 #TPA authorization
 driver.switch_to.frame(0)
 url = driver.current_url
-authenticate_through_Duo() #Currently checking through Duo push notification
+authenticate_through_Duo() #This line can be substituted by option 1 or 2 from above
 time.sleep(60) #Gives user a minute to authenticate through the Duo Mobile Application
 if(url == driver.current_url): #Checks if authentication succeeded
     print("Error with Duo Authentication")
